@@ -4,6 +4,7 @@ class Artwork < ApplicationRecord
   validates :title, presence: true
   validates :artist_id, presence: true
   validates :image_url, presence: true
+  validates :favorite_artwork, presence: true
 
   has_many :artwork_shares,
            foreign_key: :artwork_id,

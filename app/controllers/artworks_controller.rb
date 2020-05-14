@@ -41,7 +41,7 @@ class ArtworksController < ApplicationController
   end
 
   def artwork_params
-    params.require(:artwork).permit(:title, :image_url, :artist_id)
+    params.require(:artwork).permit(:title, :image_url, :artist_id, :favorite_artwork)
   end
 
 end

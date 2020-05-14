@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_13_223913) do
+ActiveRecord::Schema.define(version: 2020_05_14_215310) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 2020_05_13_223913) do
     t.integer "viewer_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "favorite_artwork", default: false, null: false
     t.index ["artwork_id", "viewer_id"], name: "index_artwork_shares_on_artwork_id_and_viewer_id", unique: true
   end
 
@@ -29,7 +30,48 @@ ActiveRecord::Schema.define(version: 2020_05_13_223913) do
     t.integer "artist_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "favorite_artwork", default: false, null: false
     t.index ["artist_id", "title"], name: "index_artworks_on_artist_id_and_title"
+  end
+
+  create_table "collection_artworks", force: :cascade do |t|
+    t.integer "collection_id", null: false
+    t.integer "artwork_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["artwork_id"], name: "index_collection_artworks_on_artwork_id"
+    t.index ["collection_id", "artwork_id"], name: "index_collection_artworks_on_collection_id_and_artwork_id", unique: true
+    t.index ["collection_id"], name: "index_collection_artworks_on_collection_id"
+  end
+
+  create_table "collections", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_collections_on_user_id"
+  end
+
+  create_table "comments", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "artwork_id", null: false
+    t.text "body", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["artwork_id"], name: "index_comments_on_artwork_id"
+    t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
+  create_table "likes", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "content_type"
+    t.bigint "content_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["content_id"], name: "index_likes_on_content_id"
+    t.index ["content_type", "content_id"], name: "index_likes_on_content_type_and_content_id"
+    t.index ["user_id", "content_id", "content_type"], name: "index_likes_on_user_id_and_content_id_and_content_type", unique: true
+    t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|

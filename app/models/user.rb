@@ -6,8 +6,27 @@ class User < ApplicationRecord
            foreign_key: :artist_id,
            class_name: 'Artwork'
 
+  has_many :artwork_shares,
+           foreign_key: :viewer_id,
+           class_name: 'ArtworkShare'
+
+  has_many :comments,
+           foreign_key: :user_id,
+           class_name: 'Comment',
+           dependent: :destroy
+
+
   has_many :shared_artworks,
-    through: :artwork_shares,
-    source: :artwork
+           through: :artwork_shares,
+           source: :artwork
+
+  has_many :likes,
+           foreign_key: :user_id,
+           class_name: 'Like'
+
+  
+  has_many :collections,
+           foreign_key: :user_id,
+           class_name: 'Collection'
 
 end

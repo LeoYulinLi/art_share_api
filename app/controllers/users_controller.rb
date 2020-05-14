@@ -1,7 +1,14 @@
 class UsersController < ApplicationController
 
+
+  # http://localhost:3000/users/?username=asdf => params[:username] = asdf
+  # http://localhost:3000/users => params[:username] = nil
   def index
-    users = User.all
+    users = if params[:username]
+              User.where("username like '%#{params[:username]}%'")
+            else
+              User.all
+            end
     render json: users
   end
 
@@ -37,6 +44,13 @@ class UsersController < ApplicationController
   def destroy
     user = User.find(params[:id])
     user.destroy
+  end
+
+  def favorites
+    user = User.find(params[:id])
+    faves = user.artworks.merge(Artwork.favorites) + user.shared_artworks.merge(ArtworkShare.favorites)
+
+    render json: faves
   end
 
   def user_params

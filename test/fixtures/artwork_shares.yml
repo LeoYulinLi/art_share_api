@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  artwork: one
+  viwer: one
+
+two:
+  artwork: two
+  viwer: two

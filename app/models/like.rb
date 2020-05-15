@@ -4,6 +4,8 @@ class Like < ApplicationRecord
   validates :content_id, presence: true
   validates :content_type, presence: true
 
+  validates :user_id, uniqueness: { scope: [:content_id, :content_type] }
+
   belongs_to :user,
              foreign_key: :user_id,
              class_name: 'User'

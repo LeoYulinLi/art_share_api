@@ -1,19 +1,8 @@
 class LikesController < ApplicationController
 
   def index
-    query = {}
-    query[:user_id] = like_params[:user_id] if like_params.key?(:user_id)
-    content_id = like_params[:artwork_id] || like_params[:comment_id]
-    content_type = if like_params[:artwork_id]
-                     'Artwork'
-                   elsif like_params[:comment_id]
-                     'Comment'
-                   else
-                     nil
-                   end
-    query[:content_id] = content_id if content_id && content_type
-    query[:content_type] = content_type if content_type
-    render json: Like.where(query)
+    user = User.find(like_params[:user_id])
+    render json: user.liked_comments + user.liked_artworks
   end
 
   def create
